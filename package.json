@@ -3,7 +3,8 @@
   "displayName": "WriteMyCommits",
   "description": "Easy way to use conventional Commits",
   "version": "0.0.1",
-  "publisher": "burkle-eliott",
+  "publisher": "BURKLEEliott",
+  "icon": "./src/media/logo.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/eliooooooo/WriteMyCommits"
@@ -14,7 +15,9 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": ["*"],
+  "activationEvents": [
+    "*"
+  ],
   "main": "./src/extension.js",
   "contributes": {
     "views": {
@@ -27,18 +30,19 @@
       ]
     },
     "commands": [
-    {
-      "command": "writemycommits.getUserInput",
-      "title": "Get My Commit Name"
-    },
-    {
-      "command": "writemycommits.getUserInputFull",
-      "title": "Get My Commit Name + Description"
-    },
-    {
-      "command": "writemycommits.getDoc",
-      "title": "Get conventionnal commits doc"
-    }]
+      {
+        "command": "writemycommits.getUserInput",
+        "title": "Get My Commit Name"
+      },
+      {
+        "command": "writemycommits.getUserInputFull",
+        "title": "Get My Commit Name + Description"
+      },
+      {
+        "command": "writemycommits.getDoc",
+        "title": "Get conventionnal commits doc"
+      }
+    ]
   },
   "scripts": {
     "lint": "eslint .",
@@ -46,12 +50,15 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.87.0",
     "@types/mocha": "^10.0.6",
     "@types/node": "18.x",
-    "eslint": "^8.56.0",
-    "typescript": "^5.3.3",
+    "@types/vscode": "^1.87.0",
     "@vscode/test-cli": "^0.0.6",
-    "@vscode/test-electron": "^2.3.9"
+    "@vscode/test-electron": "^2.3.9",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@vscode/vsce": "^2.24.0"
   }
 }
