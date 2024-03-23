@@ -21,21 +21,18 @@
         }
       ]
     },
-    "commands": [{
-      "command": "writemycommits.helloWorld",
-      "title": "Hello World"
+    "commands": [
+    {
+      "command": "writemycommits.getUserInput",
+      "title": "Get My Commit Name"
     },
     {
-      "command": "writemycommits.getCommitMessage",
-      "title": "Get Commit Message"
+      "command": "writemycommits.getUserInputFull",
+      "title": "Get My Commit Name + Description"
     },
     {
-      "command": "extension.showWebView",
-      "title": "show WebView"
-    },
-    {
-      "command": "extension.getUserInput",
-      "title": "Get User Input"
+      "command": "writemycommits.getDoc",
+      "title": "Get conventionnal commits doc"
     }]
   },
   "scripts": {
