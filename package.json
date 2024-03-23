@@ -9,12 +9,33 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
-  "main": "./extension.js",
+  "activationEvents": ["*"],
+  "main": "./src/extension.js",
   "contributes": {
+    "views": {
+      "explorer": [
+        {
+          "id": "writemycommits",
+          "name": "WriteMyCommits",
+          "icon": "./src/media/icon.svg"
+        }
+      ]
+    },
     "commands": [{
       "command": "writemycommits.helloWorld",
       "title": "Hello World"
+    },
+    {
+      "command": "writemycommits.getCommitMessage",
+      "title": "Get Commit Message"
+    },
+    {
+      "command": "extension.showWebView",
+      "title": "show WebView"
+    },
+    {
+      "command": "extension.getUserInput",
+      "title": "Get User Input"
     }]
   },
   "scripts": {
