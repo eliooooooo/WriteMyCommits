@@ -3,6 +3,11 @@
   "displayName": "WriteMyCommits",
   "description": "Easy way to use conventional Commits",
   "version": "0.0.1",
+  "publisher": "burkle-eliott",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eliooooooo/WriteMyCommits"
+  },
   "engines": {
     "vscode": "^1.87.0"
   },
