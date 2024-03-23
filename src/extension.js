@@ -37,7 +37,7 @@ class MyDataProvider {
 			item4.command = {
 				command: 'vscode.open',
 				title: 'Open URL',
-				arguments: ['github.com/eliooooooo/WriteMyCommits']
+				arguments: ['https://github.com/eliooooooo/WriteMyCommits']
 			};
 
 			const item5 = new vscode.TreeItem('');
