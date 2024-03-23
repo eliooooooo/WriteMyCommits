@@ -19,8 +19,13 @@ Exemple [here](https://youtu.be/PiYvZSA-Qwo)
 
 There are no known problems at the moment, so don't hesitate to report them!
   
-## Release Notes
-### 1.0.0
+## Release Notes  
+
+### 0.2.0
+
+Fix extension documentation link.
+
+### 0.1.0
 
 Initial release of Write My Commits.
 Features : 
