@@ -2,7 +2,7 @@
   "name": "writemycommits",
   "displayName": "WriteMyCommits",
   "description": "Easy way to use conventional Commits",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "publisher": "BURKLEEliott",
   "icon": "./src/media/logo.png",
   "repository": {
