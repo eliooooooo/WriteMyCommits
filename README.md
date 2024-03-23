@@ -1,6 +1,8 @@
 # WriteMyCommits
 
-[Logo WriteMyCommits](./src/media/logo.png)
+<p align="center">
+  <img src="./src/media/logo.png" alt="Logo WriteMyCommits">
+</p>
 A vscode extension for generating commits that comply with the conventional commits standard.  
 
 ## Features
