@@ -60,7 +60,7 @@ function activate(context) {
 	vscode.window.registerTreeDataProvider('writemycommits', myDataProvider);
 
 	const getUserInputCommand = vscode.commands.registerCommand('writemycommits.getUserInput', async () => {
-		const type = await vscode.window.showQuickPick(['Feat', 'Fix', 'Docs', 'Style', 'Refactor', 'Test'], { placeHolder: 'Select commit type' });
+		const type = await vscode.window.showQuickPick(['Feat', 'Build', 'Chore', 'Fix', 'Docs', 'Style', 'Ci', 'Refactor', 'Perf', 'Test'], { placeHolder: 'Select commit type' });
 		let isBreakingChange = await vscode.window.showQuickPick(['Yes', 'No'], { placeHolder: 'Is it a breaking change?' });
 		const scope = await vscode.window.showInputBox({ prompt: 'Enter commit scope (optional)' });
 		const description = await vscode.window.showInputBox({ prompt: 'Enter commit description' });
