@@ -1,9 +1,22 @@
 const vscode = require('vscode');
+const cp = require('child_process');
+
+class FileItem extends vscode.TreeItem {
+	constructor(label, files) {
+		super(label + (files.length ? ' (' + files.length + ')' : " (0)"), vscode.TreeItemCollapsibleState.Expanded);
+		this.files = files;
+	}
+}
 
 class MyDataProvider {
 	constructor() {
 		this._onDidChangeTreeData = new vscode.EventEmitter();
 		this.onDidChangeTreeData = this._onDidChangeTreeData.event;
+		this.workspaceRoot = vscode.workspace.workspaceFolders[0].uri.fsPath;
+	}
+
+	refresh() {
+		this._onDidChangeTreeData.fire();
 	}
 
 	getTreeItem(element) {
@@ -12,7 +25,18 @@ class MyDataProvider {
 
     getChildren(element) {
         if (element) {
-            return Promise.resolve([]);
+			if (element instanceof FileItem) {
+				return Promise.resolve(element.files.map(file => {
+					const path = require('path');
+					const item = new vscode.TreeItem(file);
+					const extension = path.extname(file).slice(1);
+					console.log(extension);
+					item.iconPath = new vscode.ThemeIcon(extension);
+					return item;
+				}));
+			} else {
+				return Promise.resolve([]);
+			}
         } else {
             const item1 = new vscode.TreeItem('Get My Commit Name');
             item1.iconPath = new vscode.ThemeIcon('play');
@@ -22,34 +46,47 @@ class MyDataProvider {
                 arguments: []
             };
 
-			const item2 = new vscode.TreeItem('Get My Commit name + description');
-			item2.iconPath = new vscode.ThemeIcon('play');
-			item2.command = {
-				command: 'writemycommits.getUserInputFull',
-				title: 'Get My Commit Name + Description',
-				arguments: []
-			};
+            const item2 = new vscode.TreeItem('Get My Commit name + description');
+            item2.iconPath = new vscode.ThemeIcon('play');
+            item2.command = {
+                command: 'writemycommits.getUserInputFull',
+                title: 'Get My Commit Name + Description',
+                arguments: []
+            };
 
 			const item3 = new vscode.TreeItem('');
 
-			const item4 = new vscode.TreeItem('Get exension doc');
-			item4.iconPath = new vscode.ThemeIcon('file');
-			item4.command = {
-				command: 'vscode.open',
-				title: 'Open URL',
-				arguments: ['https://github.com/eliooooooo/WriteMyCommits']
-			};
+            if (!this.workspaceRoot) {
+                vscode.window.showInformationMessage('No data');
+				const item4 = new vscode.TreeItem('No data, please try to open a git repository');
+                return Promise.resolve([item1, item2, item3, item4]);
+            }
 
-			const item5 = new vscode.TreeItem('');
-
-			const item6 = new vscode.TreeItem('Get conventionnal commits doc');
-			item6.iconPath = new vscode.ThemeIcon('file');
-			item6.command = {
-				command: 'vscode.open',
-				title: 'Open URL',
-				arguments: ['https://www.conventionalcommits.org/en/v1.0.0/']
-			};
-            return Promise.resolve([item1, item2, item3, item4, item5, item6]);
+			const stagedFilesPromise = new Promise((resolve, reject) => {
+				cp.exec('git diff --name-only --cached', { cwd: this.workspaceRoot }, (err, stdout) => {
+					if (err) {
+						console.error(err);
+						resolve(new vscode.TreeItem('Oops, something went wrong'));
+					} else {
+						const files = stdout.split('\n').filter(file => !!file);
+						resolve(new FileItem('Staged Files', files));
+					}
+				});
+			});
+			
+			const modifiedFilesPromise = new Promise((resolve, reject) => {
+				cp.exec('git diff --name-only', { cwd: this.workspaceRoot }, (err, stdout) => {
+					if (err) {
+						console.error(err);
+						resolve(new vscode.TreeItem('Oops, something went wrong'));
+					} else {
+						const files = stdout.split('\n').filter(file => !!file);
+						resolve(new FileItem('Modified Files', files));
+					}
+				});
+			});
+			
+			return Promise.all([Promise.resolve(item1), Promise.resolve(item2), Promise.resolve(item3), stagedFilesPromise, modifiedFilesPromise]);
         }
     }
 }
@@ -58,6 +95,10 @@ function activate(context) {
 	console.log('Congratulations, your extension "WriteMyCommits" is now active!');
 	const myDataProvider = new MyDataProvider();
 	vscode.window.registerTreeDataProvider('writemycommits', myDataProvider);
+
+	vscode.workspace.onDidSaveTextDocument(() => {
+		myDataProvider.refresh();
+	});
 
 	const getUserInputCommand = vscode.commands.registerCommand('writemycommits.getUserInput', async () => {
 		const type = await vscode.window.showQuickPick(['Feat', 'Build', 'Chore', 'Fix', 'Docs', 'Style', 'Ci', 'Refactor', 'Perf', 'Test'], { placeHolder: 'Select commit type' });
