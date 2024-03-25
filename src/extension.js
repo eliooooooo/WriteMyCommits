@@ -55,16 +55,18 @@ class MyDataProvider {
 }
 
 function activate(context) {
+	console.log('Congratulations, your extension "WriteMyCommits" is now active!');
 	const myDataProvider = new MyDataProvider();
 	vscode.window.registerTreeDataProvider('writemycommits', myDataProvider);
 
 	const getUserInputCommand = vscode.commands.registerCommand('writemycommits.getUserInput', async () => {
 		const type = await vscode.window.showQuickPick(['Feat', 'Fix', 'Docs', 'Style', 'Refactor', 'Test'], { placeHolder: 'Select commit type' });
-		const isBreakingChange = await vscode.window.showQuickPick(['Yes', 'No'], { placeHolder: 'Is it a breaking change?' });
+		let isBreakingChange = await vscode.window.showQuickPick(['Yes', 'No'], { placeHolder: 'Is it a breaking change?' });
 		const scope = await vscode.window.showInputBox({ prompt: 'Enter commit scope (optional)' });
 		const description = await vscode.window.showInputBox({ prompt: 'Enter commit description' });
+		isBreakingChange === 'Yes' ? isBreakingChange = true : isBreakingChange = false;
 
-		const commitMessage = `${type}${scope ? `(${scope})` : ''}${isBreakingChange ? '' : '!'}: ${description}`;
+		const commitMessage = `${type}${scope ? `(${scope})` : ''}${isBreakingChange ? '!' : ''}: ${description}`;
 		await vscode.env.clipboard.writeText(commitMessage);
 
 		vscode.window.showInformationMessage('Commit name copied to clipboard');
@@ -72,13 +74,14 @@ function activate(context) {
 
 	const getUserInputFullCommand = vscode.commands.registerCommand('writemycommits.getUserInputFull', async () => {
 		const type = await vscode.window.showQuickPick(['Feat', 'Fix', 'Docs', 'Style', 'Refactor', 'Test'], { placeHolder: 'Select commit type' });
-		const isBreakingChange = await vscode.window.showQuickPick(['Yes', 'No'], { placeHolder: 'Is it a breaking change?' });	
+		let isBreakingChange = await vscode.window.showQuickPick(['Yes', 'No'], { placeHolder: 'Is it a breaking change?' });	
 		const scope = await vscode.window.showInputBox({ prompt: 'Enter commit scope (optional)' });
 		const description = await vscode.window.showInputBox({ prompt: 'Enter commit description' });
 		const body = await vscode.window.showInputBox({ prompt: 'Enter commit body (optional)' });
 		const footer = await vscode.window.showInputBox({ prompt: 'Enter commit footer (optional)' });
+		isBreakingChange === 'Yes' ? isBreakingChange = true : isBreakingChange = false;
 
-		const commitMessage = `${type}${scope ? `(${scope})` : ''}${isBreakingChange ? '' : '!'}: ${description}${body ? `\n\n${body}` : ''}${footer ? `\n\n${isBreakingChange ? '' : 'BREAKING CHANGE : '}${footer}` : ''}`;
+		const commitMessage = `${type}${scope ? `(${scope})` : ''}${isBreakingChange ? '!' : ''}: ${description}${body ? `\n\n${body}` : ''}${footer ? `\n\n${isBreakingChange ? 'BREAKING CHANGE : ' : ''}${footer}` : ''}`;
 		await vscode.env.clipboard.writeText(commitMessage);
 
 		vscode.window.showInformationMessage('Commit message copied to clipboard');
