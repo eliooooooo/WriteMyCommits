@@ -1,5 +1,7 @@
 const vscode = require('vscode');
 const cp = require('child_process');
+const path = require('path');
+const fs = require('fs');
 
 class FileItem extends vscode.TreeItem {
 	constructor(label, files) {
@@ -27,11 +29,12 @@ class MyDataProvider {
         if (element) {
 			if (element instanceof FileItem) {
 				return Promise.resolve(element.files.map(file => {
-					const path = require('path');
 					const item = new vscode.TreeItem(file);
 					const extension = path.extname(file).slice(1);
-					console.log(extension);
-					item.iconPath = new vscode.ThemeIcon(extension);
+					item.iconPath = __dirname + '/icons/file_type_' + extension + '.svg';
+          if (!fs.existsSync(item.iconPath)) {
+            item.iconPath = __dirname + '/icons/file_type_default.svg';
+          }
 					return item;
 				}));
 			} else {
