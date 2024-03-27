@@ -31,7 +31,6 @@ class MyDataProvider {
 				return Promise.resolve(element.files.map(file => {
 					let fileName = path.basename(file);
 					const item = new vscode.TreeItem(fileName);
-					console.log(file);
 					const extension = path.extname(file).slice(1);
 					item.iconPath = new vscode.ThemeIcon(extension);
 
