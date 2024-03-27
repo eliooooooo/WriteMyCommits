@@ -30,8 +30,14 @@ class MyDataProvider {
 					const path = require('path');
 					const item = new vscode.TreeItem(file);
 					const extension = path.extname(file).slice(1);
-					console.log(extension);
 					item.iconPath = new vscode.ThemeIcon(extension);
+
+					item.command = {
+						command: 'vscode.open',
+						arguments: [vscode.Uri.file(path.join(this.workspaceRoot, file))],
+						title: 'Open File'
+					};
+
 					return item;
 				}));
 			} else {
