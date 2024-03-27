@@ -1,4 +1,6 @@
 const vscode = require('vscode');
+const path = require('path');
+const fs = require('fs');
 const cp = require('child_process');
 
 class FileItem extends vscode.TreeItem {
@@ -27,7 +29,9 @@ class MyDataProvider {
         if (element) {
 			if (element instanceof FileItem) {
 				return Promise.resolve(element.files.map(file => {
-					const item = new vscode.TreeItem(file);
+					let fileName = path.basename(file);
+					const item = new vscode.TreeItem(fileName);
+					console.log(file);
 					const extension = path.extname(file).slice(1);
 					item.iconPath = new vscode.ThemeIcon(extension);
 
