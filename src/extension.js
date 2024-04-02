@@ -79,11 +79,11 @@ class MyDataProvider {
 
 			const item5 = new vscode.TreeItem('');
 
-            if (!this.workspaceRoot) {
-                vscode.window.showInformationMessage('No data');
+      if (!this.workspaceRoot) {
+        vscode.window.showInformationMessage('No data');
 				const item6 = new vscode.TreeItem('No data, please try to open a git repository');
-                return Promise.resolve([item1, item2, item3, item4, item5, item6]);
-            }
+          return Promise.resolve([item1, item2, item3, item4, item5, item6]);
+      }
 
 			const stagedFilesPromise = new Promise((resolve, reject) => {
 				cp.exec('git diff --name-only --cached', { cwd: this.workspaceRoot }, (err, stdout) => {
@@ -132,10 +132,10 @@ function activate(context) {
 		isBreakingChange === 'Yes' ? isBreakingChange = true : isBreakingChange = false;
 		
 		const commitMessage = `${type}${scope ? `(${scope})` : ''}${isBreakingChange ? '!' : ''}: ${description}`;
-		await vscode.env.clipboard.writeText(commitMessage);
-		
-		vscode.window.showInformationMessage('Commit name copied to clipboard');
 		return commitMessage;
+		
+    // await vscode.env.clipboard.writeText(commitMessage);
+		// vscode.window.showInformationMessage('Commit name copied to clipboard');
 	});
 	
 	const getUserInputFullCommand = vscode.commands.registerCommand('writemycommits.getUserInputFull', async () => {
@@ -148,21 +148,23 @@ function activate(context) {
 		isBreakingChange === 'Yes' ? isBreakingChange = true : isBreakingChange = false;
 		
 		const commitMessage = `${type}${scope ? `(${scope})` : ''}${isBreakingChange ? '!' : ''}: ${description}${body ? `\n\n${body}` : ''}${footer ? `\n\n${isBreakingChange ? 'BREAKING CHANGE : ' : ''}${footer}` : ''}`;
-		await vscode.env.clipboard.writeText(commitMessage);
-		
-		vscode.window.showInformationMessage('Commit message copied to clipboard');
+		// await vscode.env.clipboard.writeText(commitMessage);
+		// vscode.window.showInformationMessage('Commit message copied to clipboard');
 	});
 	
 	const commitCommand = vscode.commands.registerCommand('wmc.commit', async () => {
 		const message = await vscode.commands.executeCommand('writemycommits.getUserInput');
-		cp.exec('git commit -m"' + String(message) + '"', { cwd: vscode.workspace.workspaceFolders[0].uri.fsPath }, (err, stdout, stderr) => {
-			if (err) {
-				console.error(err);
-				vscode.window.showErrorMessage('Error: ' + stderr);
-			} else {
-				vscode.window.showInformationMessage('Commit successful');
-			}
-		})
+    const valid = await vscode.window.showQuickPick(['Yes', 'No'], { placeHolder: 'Do you want to commit "' + message + '" ?' });
+    if (valid === 'Yes') {
+      cp.exec('git commit -m"' + String(message) + '"', { cwd: vscode.workspace.workspaceFolders[0].uri.fsPath }, (err, stdout, stderr) => {
+        if (err) {
+          console.error(err);
+          vscode.window.showErrorMessage('Error: ' + stderr);
+        } else {
+          vscode.window.showInformationMessage('Commit successful');
+        }
+      })
+    }
 	});
 
 	const docCommand = vscode.commands.registerCommand('writemycommits.getDoc', async () => {
