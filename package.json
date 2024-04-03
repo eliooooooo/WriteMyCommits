@@ -20,12 +20,29 @@
   ],
   "main": "./src/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+          {
+              "id": "writemycommits",
+              "title": "Write My Commits",
+              "icon": "./src/media/icon.svg"
+          }
+      ]
+    },
     "views": {
-      "explorer": [
+      "writemycommits": [
         {
-          "id": "writemycommits",
-          "name": "WriteMyCommits",
-          "icon": "./src/media/icon.svg"
+            "id": "writemycommitsView",
+            "name": "Write My Commits"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "writemycommits.refresh",
+          "when": "view == writemycommitsView",
+          "group": "navigation"
         }
       ]
     },
@@ -41,6 +58,11 @@
       {
         "command": "writemycommits.getDoc",
         "title": "Get conventionnal commits doc"
+      },
+      {
+        "command": "writemycommits.refresh",
+        "title": "Refresh",
+        "icon": "$(refresh)"
       }
     ]
   },

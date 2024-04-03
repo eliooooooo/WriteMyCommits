@@ -117,11 +117,15 @@ class MyDataProvider {
 function activate(context) {
 	console.log('Congratulations, your extension "WriteMyCommits" is now active!');
 	const myDataProvider = new MyDataProvider();
-	vscode.window.registerTreeDataProvider('writemycommits', myDataProvider);
+	vscode.window.registerTreeDataProvider('writemycommitsView', myDataProvider);
 
 	vscode.workspace.onDidSaveTextDocument(() => {
 		myDataProvider.refresh();
 	});
+
+  const refreshCommand = vscode.commands.registerCommand('writemycommits.refresh', () => {
+    myDataProvider.refresh();
+  });
 
 	
 	const getUserInputCommand = vscode.commands.registerCommand('writemycommits.getUserInput', async () => {
@@ -175,6 +179,7 @@ function activate(context) {
 	context.subscriptions.push(getUserInputFullCommand);
 	context.subscriptions.push(commitCommand);
 	context.subscriptions.push(docCommand);
+  context.subscriptions.push(refreshCommand);
 }
 
 exports.activate = activate;
