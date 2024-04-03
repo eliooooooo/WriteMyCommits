@@ -20,6 +20,16 @@
   ],
   "main": "./src/extension.js",
   "contributes": {
+    "configuration": {
+        "title" : "WriteMyCommits",
+        "properties": {
+          "writemycommits.commitMessageFormat": {
+            "type": "string",
+            "default": "{type}({scope}){breakingChange}: {message}",
+            "description": "Format for commit messages. Available placeholders: {type}, {scope}, {message}, {breakingChange}"
+          }
+        }
+    },
     "viewsContainers": {
       "activitybar": [
           {
