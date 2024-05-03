@@ -26,3 +26,9 @@ Initial release of Write My Commits.
 Features : 
 - Generate a commit name
 - Generate a commit name + message
+
+### 1.1.0
+
+Add new features : 
+- Can now display modified files in the window
+- Addition of new commits types 

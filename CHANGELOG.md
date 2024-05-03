@@ -10,3 +10,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Can generate a commit message + description (body + footer)
 - Can access to conventionnal commits doc
 - Initial release
+
+## [V.1.1]
+
+- Display modified files
+- New choices for commits types
+- Remove the access to the doc (in order to reduce the display of useless infos)
