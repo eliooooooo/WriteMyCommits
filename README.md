@@ -37,3 +37,7 @@ Add new features :
 
 - Resolve bugs
 - Remove formats configuration
+
+### 1.3.0
+
+- Refresh DataProvider on commit
