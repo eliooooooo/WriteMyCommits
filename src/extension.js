@@ -100,14 +100,20 @@ function activate(context) {
 	const myDataProvider = new MyDataProvider();
 	vscode.window.registerTreeDataProvider('writemycommitsView', myDataProvider);
 
+	let gitPath = path.join(vscode.workspace.rootPath, '.git');
+	fs.watch(gitPath, (event, filename) => {
+		if (filename === 'index') {
+			myDataProvider.refresh();
+		}
+	});
   
 	vscode.workspace.onDidSaveTextDocument(() => {
-    myDataProvider.refresh();
+    	myDataProvider.refresh();
 	});
 
-  const refreshCommand = vscode.commands.registerCommand('writemycommits.refresh', async () => {
-    myDataProvider.refresh();
-  });
+	const refreshCommand = vscode.commands.registerCommand('writemycommits.refresh', async () => {
+		myDataProvider.refresh();
+	});
   
 	const getUserInputCommand = vscode.commands.registerCommand('writemycommits.getUserInput', async () => {
     const type = await vscode.window.showQuickPick(['Feat', 'Build', 'Chore', 'Fix', 'Docs', 'Style', 'Ci', 'Refactor', 'Perf', 'Test'], { placeHolder: 'Select commit type' });
