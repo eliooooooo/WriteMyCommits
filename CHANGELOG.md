@@ -16,3 +16,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - Display modified files
 - New choices for commits types
 - Remove the access to the doc (in order to reduce the display of useless infos)
+
+### [V.1.2.]
+
+- Resolve bugs
+- Remove formats configuration

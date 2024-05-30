@@ -32,3 +32,8 @@ Features :
 Add new features : 
 - Can now display modified files in the window
 - Addition of new commits types 
+
+### 1.2.0
+
+- Resolve bugs
+- Remove formats configuration
