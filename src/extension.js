@@ -115,15 +115,9 @@ function activate(context) {
 		const scope = await vscode.window.showInputBox({ prompt: 'Enter commit scope (optional)' });
 		const description = await vscode.window.showInputBox({ prompt: 'Enter commit description' });
 		isBreakingChange === 'Yes' ? isBreakingChange = true : isBreakingChange = false;
-		
-    const commitMessageFormat = vscode.workspace.getConfiguration('writemycommits').get('commitMessageFormat');
-    
-    const commitMessage = commitMessageFormat
-      	.replace('{type}', type)
-      	.replace('{scope}', scope)
-      	.replace('{message}', description)
-      	.replace('{breakingChange}', isBreakingChange ? '!' : '');
-		
+		    
+		const commitMessage = `${type}${scope ? `(${scope})` : ''}${isBreakingChange ? '!' : ''}: ${description}`;
+
     	await vscode.env.clipboard.writeText(commitMessage);
 		vscode.window.showInformationMessage('Commit name copied to clipboard');
 	});
